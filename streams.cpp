@@ -10,9 +10,9 @@ int main(int argc, char **argv) {
     ifstream f(argv[1]);
     int a;
     // string s;
-    // wczytanie linijki
+    // read in lines
     // while (getline(f, s))) {
-    //wczytywanie kolejnych liczb
+    
     while (f >> a) {
         liczby.push_back(a+10);
     }
