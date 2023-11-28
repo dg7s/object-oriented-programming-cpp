@@ -36,7 +36,7 @@ class Fraction {
 				numerator = _numerator;
 			}
 
-			void print_fract();
+			void printFract();
 
 			Fraction add(const Fraction& u) const {
 				return(Fraction(numerator*u.denominator + u.numerator*denominator,
@@ -54,6 +54,7 @@ class Fraction {
 			int tempt = numerator;
 			numerator = denominator;
 			denominator = tempt;
+			return *this;
 			}
 	private:
 		int numerator;
@@ -62,7 +63,7 @@ class Fraction {
 
 };
 
-void Fraction::print_fract() {
+void Fraction::printFract() {
     reduce();
 	cout<<numerator<<"/"<<denominator<<"\n";
 }
@@ -77,9 +78,9 @@ void Fraction::reduce() {
 int main(){
 
 	Fraction u1(9,6);
-	u1.print_fract();
+	u1.printFract();
 	u1.rev();
-	u1.print_fract();
+	u1.printFract();
 
 
 return 0;
