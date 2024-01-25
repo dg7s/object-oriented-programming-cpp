@@ -1,5 +1,4 @@
 #include "dice.h"
-#include <cstdlib>
 #include <iostream>
 #include <cassert>
 #include <random>
@@ -18,7 +17,7 @@ uniform_int_distribution<int> distribution100(0,99);
 
 // Common dice.
 int CommonDice::diceRoll(){
-    return distribution(generator); // Answear in {1,2,3,4,5,6}.
+    return distribution(generator); // Answer in {1,2,3,4,5,6}.
 }
 
 // Return 1 with prob 4/6 and 6 with prob 2/6.
@@ -43,7 +42,7 @@ DeterioratingDice::DeterioratingDice(int n){
     assert(n==1 || n==6);
     number = n;
 
-    // At the start all numbers {1,2,3,4,5,6} have the samem prob 1/6.
+    // At the start all numbers {1,2,3,4,5,6} have the same prob 1/6.
     prob = 1.0 / 6.0;
 }
 
@@ -52,7 +51,7 @@ void DeterioratingDice::deteriorating(){
 }
 
 int DeterioratingDice::diceRoll(){
-    float r = distribution100(generator);
+    double r = distribution100(generator);
 
     if(r < (prob * 100) ){
         int k = number;

@@ -1,6 +1,8 @@
 #include "board.h"
-#include <iostream>
 #include "square.h"
+
+Board::Board(const vector<Square*> &squares, int _maxPlayerNumber, int _start): boardSize(squares.size()),
+maxPlayerNumber(_maxPlayerNumber), squares(squares), start(_start) {}
 
 int Board::getBoardSize() const{
     return boardSize;
@@ -10,20 +12,26 @@ int Board::getMaxPlayerNumber() const{
     return maxPlayerNumber;
 }
 
-int Board::returnStart() {
+int Board::returnStart() const {
     return start;
 }
 
-void Board::makeAction(Player *player, int &square_index) {
-    squares[square_index]->action(player, square_index);
+void Board::addSquare(Square *square) {
+    squares.push_back(square);
+    boardSize++;
 }
 
-bool Board::makeHipothethicalEnd( int &square_index, int movement_number) {
+void Board::makeAction(Player *player, int &square_index, const int game_id) {
+    squares[square_index]->action(player, square_index, game_id);
+    square_index = square_index % boardSize;
+}
+
+bool Board::makeHypotheticalEnd( int &square_index, int movement_number, const int game_id) {
     for(int i = 1; i <= movement_number; i++){
         int current_position = (square_index + i) % boardSize;
 
         // Check if we find End square.
-        if(squares[current_position]->hypotheticalEnd(square_index)){
+        if(squares[current_position]->hypotheticalEnd(square_index, game_id)){
             // Updated square index.
             square_index = current_position;
             return true;
@@ -33,12 +41,12 @@ bool Board::makeHipothethicalEnd( int &square_index, int movement_number) {
     return false;
 }
 
-bool Board::makeHipothethicalAction(Player *player, int &square_index, int movement_number) {
-    for(int i = 1; i <= movement_number; i++){
+bool Board::makeHypotheticalAction(Player *player, int &square_index, const int game_id) {
+    for(int i = 1; i <= 6; i++){
         int current_position = (square_index + i) % boardSize;
 
-        // Check if we find HipothethicalAction square.
-        if(squares[current_position]->hypotheticalAction(player, square_index)){
+        // Check if we find HypotheticalAction square.
+        if(squares[current_position]->hypotheticalAction(player, game_id)){
             // Update square index.
             square_index = current_position;
             return true;

@@ -50,10 +50,10 @@ class Game {
 
         // Methods connected to players.
         // If DokTOr_level = 13 player try to find tries to find the nearest end square within range k
-        void tryToEnd(int k);
+        void tryToEnd(int player_index, int rolled_number);
         // If roll() = 6 maybe player wants to choose an earlier regeneration field.
-        void tryToRegeneration(int k);
-        void normalMove(int k);
+        void tryToRegeneration(int player_index);
+        void normalMove(int player_index, int rolled_number);
         int getTurnsNumber() const;
 
         // Getters to dices.

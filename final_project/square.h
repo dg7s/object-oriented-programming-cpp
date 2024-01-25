@@ -24,27 +24,27 @@ class Square {
         Square* getPrev() const;
 */
         // Methods:
-        virtual void action(Player* player, int &square_index) const = 0; // Make action on player.
+        virtual void action(Player* player, int &square_index, int game_id) const = 0; // Make action on player.
         virtual void name() const = 0; // Print out a name.
 
-        virtual bool hypotheticalAction(Player* player, int &square_index) const = 0; // Return if an action for player was taken.
-        virtual bool hypotheticalEnd(int &square_index) const = 0; // Return if an action for player was taken.
+        virtual bool hypotheticalAction(Player* player, int game_id) const = 0; // Return if an action for player was taken.
+        virtual bool hypotheticalEnd(int &square_index, int game_id) const = 0; // Return if an action for player was taken.
 
 
 };
 class NotEnd : public Square{
     public:
-        bool hypotheticalEnd(int &square_index) const override;
+        bool hypotheticalEnd(int &square_index, int game_id) const override;
 };
 
 class HypotheticalActionIsNull : public NotEnd{
     public:
-        bool hypotheticalAction(Player* player, int &square_index) const override;
+        bool hypotheticalAction(Player* player, int game_id) const override;
 };
 
 class ActionIsNull : public HypotheticalActionIsNull{
     public:
-        void action(Player* player, int &square_index) const override;
+        void action(Player* player, int &square_index, int game_id) const override;
 };
 
 // Square from where players start game. Only one per board. During game does nothing.
@@ -63,9 +63,9 @@ class Empty : public ActionIsNull {
 class End : public Square {
     public:
         void name() const override;
-        bool hypotheticalAction(Player* player, int &square_index) const override;
-        void action(Player* player, int &square_index) const override;
-        bool hypotheticalEnd(int &square_index) const override;
+        bool hypotheticalAction(Player* player, int game_id) const override;
+        void action(Player* player, int &square_index, int game_id) const override;
+        bool hypotheticalEnd(int &square_index, int game_id) const override;
 
 };
 
@@ -73,27 +73,33 @@ class End : public Square {
 class Regeneration : public NotEnd {
     public:
         void name() const override;
-        void action(Player* player, int &square_index) const override;
-        bool hypotheticalAction(Player *player, int &square_index) const override;
+        void action(Player* player, int &square_index, int game_id) const override;
+        bool hypotheticalAction(Player *player, int game_id) const override;
 };
 
 // Player need to wait a few queues.
 class Waiting : public HypotheticalActionIsNull {
+    private:
+        vector<int> time_to_wait;
     public:
+        Waiting() = delete;
+        explicit Waiting(int k);
+        explicit Waiting(const vector<int> &k);
+
         void name() const override;
-        void action(Player* player, int &square_index) const override;
+        void action(Player* player, int &square_index, int game_id) const override;
 };
 
 // Move player to proper square.
 class MoveTo : public HypotheticalActionIsNull {
     private:
-        int square_number;
+        int jump_length;
     public:
         MoveTo() = delete;
-        MoveTo(int k);
+        explicit MoveTo(int k);
 
         void name() const override;
-        void action(Player* player, int &square_index) const override;
+        void action(Player* player, int &square_index, int game_id) const override;
 };
 
 #endif // SQUARE_H

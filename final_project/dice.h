@@ -18,7 +18,7 @@ public:
     Dice& operator=(const Dice&) = delete;
 
     // Methods:
-    virtual int diceRoll() = 0; // Virtual method to throw a dice.
+    virtual int diceRoll() = 0; // Virtual method to throw a die.
 };
 
 class CommonDice : public Dice {
@@ -34,7 +34,7 @@ public:
 class DeterioratingDice : public Dice {
 private:
     int number; // Which number will deteriorate.
-    float prob; // Probability of number above.
+    double prob; // Probability of number above.
 public:
     // Constructors. In second one we decide which number will
     // deteriorate (Only 1 and 6 are possible). Useful for testing.

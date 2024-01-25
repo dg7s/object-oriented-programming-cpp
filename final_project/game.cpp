@@ -1,9 +1,7 @@
 #include "game.h"
 #include <iostream>
-#include <utility>
 #include <vector>
 #include "player.h"
-#include "square.h"
 #include "dice.h"
 #include "cassert"
 
@@ -52,22 +50,32 @@ void Game::makeTour(){
 }
 
 // k - index of player in our vector.
-void Game::makeMove(int index) {
-    player_decision decision = players[index].first->playerDecision(game_id);
+void Game::makeMove(int player_index) {
+    // Check if player need to wait.
+    // If true method decrease wait time and end round for this player.
+    if(players[player_index].first->needToWait(game_id)) return;
+
+    //If not.
+
+    // Players chooses a die.
+    Dice * dice = getDice(players[player_index].first->chooseDice());
+
+    // Player rolls the dice.
+    int rolled_number = players[player_index].first->roll(dice);
+
+
+    player_decision decision = players[player_index].first->playerDecision(game_id, rolled_number);
 
     switch(decision) {
-        case player_decision::wait:
-            // Player waits a turn and his waitTime attribute decreases by one.
-            break;
         case player_decision::end_game:
             // Player looks for an end square.
-            tryToEnd(index);
+            tryToEnd(player_index, rolled_number);
             break;
         case player_decision::find_regenerate_square:
-            tryToRegeneration(index);
+            tryToRegeneration(player_index);
             break;
         case player_decision::normal_move:
-            normalMove(index);
+            normalMove(player_index,rolled_number);
             break;
     }
 
@@ -87,16 +95,12 @@ Dice* Game::getDice(dice_name _dice_name){
 }
 
 
-void Game::tryToEnd(int player_index){
-    // Players chooses a die.
-    Dice * dice = getDice(players[player_index].first->chooseDice());
+void Game::tryToEnd(int player_index, int rolled_number){
 
-    // Player rolls the dice.
-    int rolled_number = players[player_index].first->roll(dice);
 
     // If expression is false.
-    if(!board->makeHipothethicalEnd(players[player_index].second,rolled_number)){
-        normalMove(player_index);
+    if(!board->makeHypotheticalEnd(players[player_index].second,rolled_number, game_id)){
+        normalMove(player_index,rolled_number);
     } else {
         // Add the player to winners.
         isWinner = true;
@@ -106,32 +110,23 @@ void Game::tryToEnd(int player_index){
 
 }
 void Game::tryToRegeneration(int player_index){
-    // Players chooses a die.
-    Dice * dice = getDice(players[player_index].first->chooseDice());
-
-    // Player rolls the dice.
-    int rolled_number = players[player_index].first->roll(dice);
 
     // If the expression is false, we perform normal movement.
-    if(!board->makeHipothethicalAction(players[player_index].first, players[player_index].second,rolled_number)){
-        normalMove(player_index);
+    if(!board->makeHypotheticalAction(players[player_index].first, players[player_index].second, game_id)){
+        normalMove(player_index,6);
     }
 }
 
 
-void Game::normalMove(int player_index) {
-    // Players chooses a die.
-    Dice * dice = getDice(players[player_index].first->chooseDice());
-
-    // Player rolls the dice, and we calculate the final index of square.
+void Game::normalMove(int player_index, int rolled_number) {
     // new_player_position = (rolled_number + actual index on the board) modulo size of the board
-    int new_player_position = (players[player_index].first->roll(dice) + players[player_index].second)
+    int new_player_position = (rolled_number+ players[player_index].second)
             % board->getBoardSize();
 
     players[player_index].second = new_player_position;
 
     // The appropriate action for the square is performed. Function updates the player's position.
-    board->makeAction(players[player_index].first, players[player_index].second);
+    board->makeAction(players[player_index].first, players[player_index].second, game_id);
 }
 
 // Print out the winners.

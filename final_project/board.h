@@ -17,8 +17,8 @@ class Board {
 public:
         // Constructors
         Board() = delete;
-        Board(int _boardSize);
-        Board(vector<Square*> );
+        // Vector of squares, maximum players number and index to start square.
+        explicit Board(const vector<Square*> &squares, int _maxPlayerNumber,int start);
 
         // Destructor
         ~Board() = default;
@@ -29,17 +29,14 @@ public:
 
         // Methods
         void addSquare(Square* square); // Add to list next square if possible.
-        bool tryToFindEND(int &player_position, int move_number);
+        void makeAction(Player* player, int &square_index, const int game_id);
+        bool makeHypotheticalAction(Player* player, int &square_index, const int game_id);
+        bool makeHypotheticalEnd(int &square_index, int movement_number, const int game_id);
 
-        // Make
-        void makeAction(Player* player, int &square_index);
-        bool makeHipothethicalAction(Player* player, int &square_index, int movement_number);
-        bool makeHipothethicalEnd(int &square_index, int movement_number);
-
-    // Getters
+        // Getters
         int getBoardSize() const; // Returns a size of the board.
-        int returnStart(); // Returns a pointer to Start Square.
-        Square* playerSquare(Game*, Player*, int k); // Returns a pointer to a Square k away from the Player in the Game.
+        int returnStart() const; // Returns a pointer to Start Square.
+        //Square* playerSquare(Game*, Player*, int k); // Returns a pointer to a Square k away from the Player in the Game.
         int getMaxPlayerNumber() const;
 };
 
