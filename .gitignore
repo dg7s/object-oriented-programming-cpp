@@ -1,6 +1,6 @@
 *
 !*.cpp*
-!*.h
+!*.h*
 !*/
 !Makefile
 !LICENSE
