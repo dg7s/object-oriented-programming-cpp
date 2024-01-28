@@ -27,7 +27,7 @@ bool HypotheticalActionIsNull::hypotheticalAction(Player *player, const int game
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // ActionIsNull class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-void ActionIsNull::action(Player *player, int &square_index, const int game_id) const {return;}
+void ActionIsNull::action(Player *player, int &square_index, const int game_id) const {}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Start class methods
@@ -44,7 +44,7 @@ void Empty::name() const {cout<<"Empty";}
 // End class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void End::name() const {cout<<"End";}
-void End::action(Player *player, int &square_index, const int game_id) const {return;}
+void End::action(Player *player, int &square_index, const int game_id) const {}
 bool End::hypotheticalEnd(int &square_index, const int game_id) const {return true;}
 bool End::hypotheticalAction(Player *player, const int game_id) const {return false;}
 

@@ -6,6 +6,9 @@
 #include "square.h"
 #include "game.h"
 
+class Game;
+class  Square;
+
 class Board {
     private:
         int start; // Index in vector of Start square.

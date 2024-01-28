@@ -14,12 +14,14 @@ Game::Game(Board* _board, const vector<Player*> &_players, Dice* _common,
     }
     // Initialize vector <Players*, turns_to_wait
     for (auto & player : _players) {
-        addPlayer(player);
+        addPlayer(player, game_id);
     }
 }
 
+Game::~Game() {}
+
 // Methods.
-void Game::addPlayer(Player* player) {
+void Game::addPlayer(Player* player, int game_id) {
     if(isStarted) {
         throw logic_error("The game is in progress.");
     }
@@ -27,10 +29,12 @@ void Game::addPlayer(Player* player) {
         throw logic_error("The maximum number of players has been exceeded.");
     } else {
         players.emplace_back(player, board->returnStart());
+        player->joinNewGame(game_id);
     }
 }
 
 void Game::startGame() {
+    cout<<"The game has started.\n";
     isStarted = true;
     while(!isWinner) {
         makeTour();
@@ -44,6 +48,7 @@ int Game::getTurnsNumber() const{
 
 void Game::makeTour(){
     for( int index = 0; index < players.size(); index++) {
+        cout<<"Make TOur"<<index<<"\n";
         makeMove(index);
     }
     turnsNumber++;
@@ -56,14 +61,13 @@ void Game::makeMove(int player_index) {
     if(players[player_index].first->needToWait(game_id)) return;
 
     //If not.
-
     // Players chooses a die.
     Dice * dice = getDice(players[player_index].first->chooseDice());
 
     // Player rolls the dice.
     int rolled_number = players[player_index].first->roll(dice);
 
-
+    cout<<"Podejmuje decyzeje";
     player_decision decision = players[player_index].first->playerDecision(game_id, rolled_number);
 
     switch(decision) {
@@ -151,4 +155,11 @@ void Game::finish(){
         }
         cout<<"won the game.";
     }
+
+    // Deleted all attributes connected to this game.
+    for (const auto& pair : players) {
+        pair.first->endGame(game_id);
+    }
+
+
 }

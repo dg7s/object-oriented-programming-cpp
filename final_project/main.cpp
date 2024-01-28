@@ -2,13 +2,15 @@
 #include <fstream>
 #include <stdexcept>
 #include <vector>
-
 #include "dice.h"
 #include "game.h"
 #include "square.h"
 #include "player.h"
 
+int game_id = 0;
+
 using namespace std;
+
 
 int main(int argc, char** argv){
 
@@ -29,15 +31,20 @@ try {
     // Load the number of players.
     unsigned int playerNumber;
     input >> playerNumber;
+    cout<<"playerNumber"<<playerNumber<<"\n";
+
 
     // Load the players into a vector.
     vector<Player*> players;
     for(int i = 0; i < playerNumber; i++){
         char playerType;
         string playerName;
+        cout<<"Petla "<<i<<"\n";
+        input >> playerType;
+        input.ignore();
 
-        // Wczytaj dane gracza z pliku
-        input >> playerType >> playerName;
+        getline(input, playerName);
+        cout<<"Gracz typu: "<<playerName<<"\n";
         Player* player;
         switch (playerType) {
             case 'L':
@@ -56,21 +63,28 @@ try {
                 throw logic_error("Incorrect player type.");
         }
 
-        // Dodaj gracza do wektora
+        // Add player to the vector.
         players.push_back(player);
     }
 
     // Load the number of squares.
     unsigned int squareNumber;
     input >> squareNumber;
+    cout<<"SquareNumber"<<squareNumber<<"\n";
+
+    // Index of square Start
+    int start_index;
+
+    vector<Square*> squares;
+
+    // Some parameters that need to be checked for every game.
+    int number_of_start = 0;
+    int number_of_end = 0;
+    int number_of_regeneration = 0;
 
     // Load the squares.
     for(int i = 0; i < squareNumber; i++){
-        // Some parameters that need to be checked for every game.
-        int number_of_start, number_of_regeneration;
-
-        // Index of square Start
-        int start_index;
+        cout<<"Petla "<<i<<"\n";
         char squareType;
         input >> squareType;
 
@@ -82,6 +96,7 @@ try {
                     square = new Start();
                     break;
                 case 'D':
+                    number_of_end++;
                     square = new End();
                     break;
                 case '.':
@@ -105,10 +120,48 @@ try {
                 default:
                     throw logic_error("Incorrect square type.");
             }
-        if(number_of_start > 1 || number_of_start == 0 || number_of_regeneration >= 4)
-            throw logic_error("Incorrect data.");
 
+            squares.push_back(square);
     }
+    if(number_of_start != 1 || number_of_regeneration >= 4 || number_of_end == 0) {
+        throw logic_error("Incorrect number of squares.");
+    }
+
+    int _maxPlayerNumber = (squareNumber / 4 > 0) ? (squareNumber / 4) : 1;
+
+    // Create a board
+    Board* board = new Board(squares, _maxPlayerNumber, start_index);
+
+    // Create dices.
+    CommonDice* common = new CommonDice();
+    DefectiveDice* defective = new DefectiveDice();
+    DeterioratingDice* deteriorating = new DeterioratingDice();
+
+    // Create a game.
+    Game game(board, players, common, deteriorating, defective, game_id);
+
+    game.startGame();
+
+    // Change game_id for next game.
+    game_id++;
+
+    // Cleanup: Destruct players
+    for (Player* player : players) {
+        delete player;
+    }
+
+    // Cleanup: Destruct squares
+    for (Square* square : squares) {
+        delete square;
+    }
+
+    // Cleanup: Destruct board
+    delete board;
+
+    // Cleanup: Destruct dices
+    delete common;
+    delete defective;
+    delete deteriorating;
 
     // Close the file.
     input.close();
@@ -116,10 +169,10 @@ try {
     } catch (const exception& e) {
         cerr << e.what() << "\n";
         return 1;
-    }
+    } catch (const out_of_range& e) {
+    std::cerr << "Error: " << e.what() << std::endl;
+}
 
-
-test_dice();
 
 return 0;
 }

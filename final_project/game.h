@@ -8,6 +8,9 @@
 #include "player.h"
 #include "square.h"
 
+class Board;
+class Player;
+
 using namespace std;
 class Game {
     private:
@@ -34,14 +37,14 @@ class Game {
          Dice* _deteriorating, Dice* _defective, int _game_id);
 
         // Destructor
-        ~Game() = default;
+        ~Game();
 
         // Copy constructor and Assigment operator is deleted.
         Game(const Game& g) = delete;
         Game& operator=(const Game&) = delete;
 
         // Methods.
-        void addPlayer(Player* player); // Add player to the game. Possible only before start of the game.
+        void addPlayer(Player* player, int game_id); // Add player to the game. Possible only before start of the game.
         void startGame(); // Starts the game.
         void makeTour(); // Make all moves in current tour.
         void finish(); // End the game and print the results.

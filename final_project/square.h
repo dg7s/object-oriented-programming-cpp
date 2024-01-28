@@ -1,7 +1,10 @@
 #ifndef SQUARE_H
 #define SQUARE_H
 
+#include <vector>
 #include "player.h"
+
+class Player;
 
 // Names of all classes which can be used in the game.
 enum class square_name {start_square, end_square, empty_square, regeneration_square, move_to_square, waiting_square};
@@ -80,11 +83,11 @@ class Regeneration : public NotEnd {
 // Player need to wait a few queues.
 class Waiting : public HypotheticalActionIsNull {
     private:
-        vector<int> time_to_wait;
+        std::vector<int> time_to_wait;
     public:
         Waiting() = delete;
         explicit Waiting(int k);
-        explicit Waiting(const vector<int> &k);
+        explicit Waiting(const std::vector<int> &k);
 
         void name() const override;
         void action(Player* player, int &square_index, int game_id) const override;
