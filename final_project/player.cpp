@@ -16,20 +16,29 @@ uniform_int_distribution<int> distribution_player(0,2);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Player::Player(string _player_name): player_name(std::move(_player_name)) {}
 
-void Player::coutName() {
+void const Player::coutName() {
     cout<<player_name;
+}
+
+void Player::coutStatus(int game_id) {
+
+    cout<<"Player ";
+    cout<<player_name;
+    cout<<" ";
+    cout<<doKTOr_level(game_id);
+    cout<<"\n";
 }
 int Player::roll(Dice* dice) {
     return dice->diceRoll();
 }
 int Player::doKTOr_level(int game_id) {
-    cout<<"doKTOr_level\n";
+    cout<<"doKTOr_level: ";
 
     return playerAttribute[gameIndexMap.at(game_id)].first;
 }
 void Player::joinNewGame(int game_id) {
     cout<<"joinNewGame\n";
-    playerAttribute.push_back(std::make_pair(13, 0));
+    playerAttribute.push_back(std::make_pair(9, 0));
     cout<<game_id;
     gameIndexMap[game_id] = playerAttribute.size() - 1;
 }
@@ -41,12 +50,14 @@ void Player::endGame(int game_id) {
 }
 
 bool Player::needToWait(int game_id) {
-    cout<<"Wait method\n";
     size_t index_game_id = gameIndexMap.at(game_id);
     if(playerAttribute[index_game_id].second == 0) return false;
-    cout<<"need to wait\n";
+    cout<<"Player need to wait with wait_time = "<<playerAttribute[index_game_id].second;
+    playerAttribute[gameIndexMap.at(game_id)].second--;
+    cout<<"\n";
     return true;
 }
+
 
 void Player::wait(int game_id, int time_to_wait) {
     // Time to wait +2.
@@ -56,8 +67,11 @@ void Player::wait(int game_id, int time_to_wait) {
 void Player::regenerate(int game_id) {
     // Time to wait +2.
     playerAttribute[gameIndexMap.at(game_id)]  .second += 2;
+    // Regenerate:
+    playerAttribute[gameIndexMap.at(game_id)].first++;
+
     // Print out information.
-    cout<<"\n Player "<<player_name<<" are regenerating and need to wait 2 turns.";
+    cout<<"\n Player "<<player_name<<" are regenerating and need to wait 2 turns.\n";
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Common class methods
@@ -99,20 +113,19 @@ player_decision NormalMoveCommon::playerDecision(int game_id, int rolled_number)
 // Random class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dice_name Random::chooseDice() {
-    cout<<"chooseDice\n";
     int k = distribution_player(generator_player);
-    cout<<"licz"<<k<<"\n";
-
-    return dice_name::common;
+    cout<<"Player ";
+    cout<<player_name;
+    cout<<"choose dice: ";
     switch (k) {
         case 0:
-            cout<<"common";
+            cout<<"common\n";
             return dice_name::common;
         case 1:
-            cout<<"dete";
+            cout<<"deteriorating\n";
             return dice_name::deteriorating;
         case 2:
-            cout<<"defe";
+            cout<<"defective\n";
             return dice_name::defective;
     }
     throw logic_error("Error.");

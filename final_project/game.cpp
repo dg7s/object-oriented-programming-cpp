@@ -37,6 +37,8 @@ void Game::startGame() {
     cout<<"The game has started.\n";
     isStarted = true;
     while(!isWinner) {
+        cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
+        cout<<"Round number "<<turnsNumber<<"\n";
         makeTour();
     }
     finish();
@@ -48,7 +50,7 @@ int Game::getTurnsNumber() const{
 
 void Game::makeTour(){
     for( int index = 0; index < players.size(); index++) {
-        cout<<"Make TOur"<<index<<"\n";
+
         makeMove(index);
     }
     turnsNumber++;
@@ -56,9 +58,14 @@ void Game::makeTour(){
 
 // k - index of player in our vector.
 void Game::makeMove(int player_index) {
+
+    cout<<"Turn of ";
+    players[player_index].first->coutStatus(game_id);
+    cout<<"\n";
+
     // Check if player need to wait.
     // If true method decrease wait time and end round for this player.
-    if(players[player_index].first->needToWait(game_id)) return;
+    if(players[player_index].first->needToWait(game_id)) {return;}
 
     //If not.
     // Players chooses a die.
@@ -67,7 +74,6 @@ void Game::makeMove(int player_index) {
     // Player rolls the dice.
     int rolled_number = players[player_index].first->roll(dice);
 
-    cout<<"Podejmuje decyzeje";
     player_decision decision = players[player_index].first->playerDecision(game_id, rolled_number);
 
     switch(decision) {
@@ -141,19 +147,19 @@ void Game::finish(){
     assert((!winners.empty()) && "Error during ending the game.");
 
     if(winners.size() == 1) {
-        cout<<"round the game is over.";
+        cout<<" round the game is over.\n";
         cout << "Player ";
         players[winners[0]].first->coutName();
-        cout << " won the game.";
+        cout << " won the game.\n";
     }
     else {
-        cout<<"rounds the game is over.";
+        cout<<" rounds the game is over.\n";
         cout<<"Players: ";
         for(int i = 0; i < winners.size(); i++){
             players[winners[0]].first->coutName();
             cout<<", ";
         }
-        cout<<"won the game.";
+        cout<<"won the game.\n";
     }
 
     // Deleted all attributes connected to this game.

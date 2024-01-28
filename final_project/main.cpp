@@ -31,7 +31,6 @@ try {
     // Load the number of players.
     unsigned int playerNumber;
     input >> playerNumber;
-    cout<<"playerNumber"<<playerNumber<<"\n";
 
 
     // Load the players into a vector.
@@ -39,12 +38,10 @@ try {
     for(int i = 0; i < playerNumber; i++){
         char playerType;
         string playerName;
-        cout<<"Petla "<<i<<"\n";
         input >> playerType;
         input.ignore();
 
         getline(input, playerName);
-        cout<<"Gracz typu: "<<playerName<<"\n";
         Player* player;
         switch (playerType) {
             case 'L':
@@ -70,7 +67,6 @@ try {
     // Load the number of squares.
     unsigned int squareNumber;
     input >> squareNumber;
-    cout<<"SquareNumber"<<squareNumber<<"\n";
 
     // Index of square Start
     int start_index;
@@ -84,7 +80,6 @@ try {
 
     // Load the squares.
     for(int i = 0; i < squareNumber; i++){
-        cout<<"Petla "<<i<<"\n";
         char squareType;
         input >> squareType;
 

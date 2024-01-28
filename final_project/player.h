@@ -48,7 +48,8 @@ class Player {
         int doKTOr_level(int index_game_id);
 
         // Print out methods
-        void coutName();
+        void coutStatus(int game_id);
+        void const coutName();
 };
 
 // Choose only common dice.
