@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <utility>
+#include <memory>
 #include "board.h"
 #include "player.h"
 #include "square.h"
@@ -33,7 +34,7 @@ class Game {
     public:
         // Constructors
         Game() = delete;
-        Game(Board* _board, const vector<Player*> &_players, Dice* _common,
+        Game(Board* _board, const vector<std::unique_ptr<Player>>& players, Dice* _common,
          Dice* _deteriorating, Dice* _defective, int _game_id);
 
         // Destructor
@@ -44,7 +45,7 @@ class Game {
         Game& operator=(const Game&) = delete;
 
         // Methods.
-        void addPlayer(Player* player, int game_id); // Add player to the game. Possible only before start of the game.
+        void addPlayer(Player* player); // Add player to the game. Possible only before start of the game.
         void startGame(); // Starts the game.
         void makeTour(); // Make all moves in current tour.
         void finish(); // End the game and print the results.
@@ -58,6 +59,7 @@ class Game {
         void tryToRegeneration(int player_index);
         void normalMove(int player_index, int rolled_number);
         int getTurnsNumber() const;
+
 
         // Getters to dices.
         Dice* getDice(dice_name);

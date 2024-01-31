@@ -100,6 +100,7 @@ class Traditional : public NormalMoveCommon {
 class Wary : public Player {
     private:
         int badLuck; // The number of turns in which a player rolled a one.
+        bool fieldsToRegenerationSquare; // True if there is a regeneration field in the next six fields.
 
     public:
         explicit Wary(string _player_name);

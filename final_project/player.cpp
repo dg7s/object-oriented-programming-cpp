@@ -138,6 +138,9 @@ Wary::Wary(string _player_name): Player(std::move(_player_name)) {
     badLuck = 0;
 }
 dice_name Wary::chooseDice() {
+    // Check if there is a regeneration field in the next six fields
+    if(fieldsToRegenerationSquare) return  dice_name::defective;
+
     if(badLuck == 4) return dice_name::common;
 
     return dice_name::deteriorating;

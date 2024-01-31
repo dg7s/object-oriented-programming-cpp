@@ -1,27 +1,28 @@
 #include "game.h"
 #include <iostream>
 #include <vector>
+#include <memory>
 #include "player.h"
 #include "dice.h"
 #include "cassert"
 
-Game::Game(Board* _board, const vector<Player*> &_players, Dice* _common,
+Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, Dice* _common,
            Dice* _deteriorating, Dice* _defective, int _game_id): turnsNumber(0), isStarted(false),
                                                isWinner(false), board(_board),  common(_common),
                                                deteriorating(_deteriorating), defective(_defective), game_id(_game_id){
     if(_players.size() > _board->getMaxPlayerNumber()) {
         throw logic_error("The maximum number of players has been exceeded.");
     }
-    // Initialize vector <Players*, turns_to_wait
-    for (auto & player : _players) {
-        addPlayer(player, game_id);
+    // Initialize vector <Players*, turns_to_wait>
+    for (const auto & player : _players) {
+        addPlayer(player.get());
     }
 }
 
 Game::~Game() {}
 
 // Methods.
-void Game::addPlayer(Player* player, int game_id) {
+void Game::addPlayer(Player* player) {
     if(isStarted) {
         throw logic_error("The game is in progress.");
     }
@@ -166,6 +167,4 @@ void Game::finish(){
     for (const auto& pair : players) {
         pair.first->endGame(game_id);
     }
-
-
 }
