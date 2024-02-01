@@ -21,6 +21,14 @@ void Board::addSquare(Square *square) {
     boardSize++;
 }
 
+vector<square_name> Board::NextSixFields(int square_index) {
+    vector<square_name> futureFields;
+    for(int i = 1; i <= 6; i++){
+        squares[square_index]->addSquareToVector(futureFields);
+    }
+    return futureFields;
+}
+
 void Board::makeAction(Player *player, int &square_index, const int game_id) {
     squares[square_index]->action(player, square_index, game_id);
     square_index = square_index % boardSize;

@@ -107,7 +107,10 @@ player_decision NormalMoveCommon::playerDecision(int game_id, int rolled_number)
     else return player_decision::normal_move;
 }
 
-
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Traditional class methods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+bool Traditional::needToKnowFuture() {return false;}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Random class methods
@@ -130,6 +133,7 @@ dice_name Random::chooseDice() {
     }
     throw logic_error("Error.");
 }
+bool Random::needToKnowFuture() {return false;}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Wary class methods
@@ -137,6 +141,14 @@ dice_name Random::chooseDice() {
 Wary::Wary(string _player_name): Player(std::move(_player_name)) {
     badLuck = 0;
 }
+dice_name Wary::chooseDiceWithFuture(vector<square_name> &future) {
+    // Check if in the next 6 fields are a Regenerate square;
+    for (const auto& element : future) {
+        if (element == square_name::regeneration_square) return dice_name::defective;
+    }
+    return chooseDice();
+}
+
 dice_name Wary::chooseDice() {
     if(badLuck == 4) return dice_name::common;
 
@@ -152,7 +164,7 @@ player_decision Wary::playerDecision(int game_id, int rolled_number) {
         return player_decision::find_regenerate_square;
     } else return player_decision::normal_move;
 }
-
+bool Wary::needToKnowFuture() {return true;}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Experimental class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -167,3 +179,4 @@ player_decision Experimental::playerDecision(int game_id, int rolled_number) {
         return player_decision::normal_move;
     }
 }
+bool Experimental::needToKnowFuture() {return false;}

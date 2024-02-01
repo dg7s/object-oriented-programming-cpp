@@ -32,7 +32,7 @@ class Square {
 
         virtual bool hypotheticalAction(Player* player, int game_id) const = 0; // Return if an action for player was taken.
         virtual bool hypotheticalEnd(int &square_index, int game_id) const = 0; // Return if an action for player was taken.
-
+        virtual void addSquareToVector(std::vector<square_name>& futureFields) = 0; // Add square_name to the vector;
 
 };
 class NotEnd : public Square{
@@ -54,12 +54,14 @@ class ActionIsNull : public HypotheticalActionIsNull{
 class Start : public ActionIsNull {
     public:
         void name() const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 };
 
 // Nothing happens.
 class Empty : public ActionIsNull {
     public:
         void name() const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 };
 
 // Square where players end a game.
@@ -69,6 +71,7 @@ class End : public Square {
         bool hypotheticalAction(Player* player, int game_id) const override;
         void action(Player* player, int &square_index, int game_id) const override;
         bool hypotheticalEnd(int &square_index, int game_id) const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 
 };
 
@@ -78,6 +81,7 @@ class Regeneration : public NotEnd {
         void name() const override;
         void action(Player* player, int &square_index, int game_id) const override;
         bool hypotheticalAction(Player *player, int game_id) const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 };
 
 // Player need to wait a few queues.
@@ -91,6 +95,7 @@ class Waiting : public HypotheticalActionIsNull {
 
         void name() const override;
         void action(Player* player, int &square_index, int game_id) const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 };
 
 // Move player to proper square.
@@ -103,6 +108,7 @@ class MoveTo : public HypotheticalActionIsNull {
 
         void name() const override;
         void action(Player* player, int &square_index, int game_id) const override;
+        void addSquareToVector(std::vector<square_name>& futureFields) override;
 };
 
 #endif // SQUARE_H

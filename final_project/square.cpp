@@ -33,12 +33,17 @@ void ActionIsNull::action(Player *player, int &square_index, const int game_id) 
 // Start class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Start::name() const {cout<<"Start";}
+void Start::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::start_square);
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Empty class methods
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 void Empty::name() const {cout<<"Empty";}
-
+void Empty::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::empty_square);
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // End class methods
@@ -47,6 +52,9 @@ void End::name() const {cout<<"End";}
 void End::action(Player *player, int &square_index, const int game_id) const {}
 bool End::hypotheticalEnd(int &square_index, const int game_id) const {return true;}
 bool End::hypotheticalAction(Player *player, const int game_id) const {return false;}
+void End::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::end_square);
+}
 
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,6 +68,9 @@ bool Regeneration::hypotheticalAction(Player *player,const int game_id) const {
 void Regeneration::action(Player *player, int &square_index, const int game_id) const {
     // Method print put all the information.
     player->regenerate(game_id);
+}
+void Regeneration::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::end_square);
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -88,6 +99,9 @@ void Waiting::action(Player *player, int &square_index,const int game_id) const 
     // Method wait print out information.
     player->wait(game_id,time);
 }
+void Waiting::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::waiting_square);
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // MoveTo class methods
@@ -97,4 +111,7 @@ void MoveTo::name() const {cout<<"Move To";}
 void MoveTo::action(Player *player, int &square_index,const int game_id) const {
     square_index = (square_index + jump_length);
     cout<<"\n Player jumped "<<jump_length<<" squares.\n";
+}
+void MoveTo::addSquareToVector(std::vector<square_name> &futureFields) {
+    futureFields.push_back(square_name::move_to_square);
 }

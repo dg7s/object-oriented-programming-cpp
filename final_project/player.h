@@ -11,7 +11,7 @@
 class Square;
 class Dice;
 class Board;
-
+enum class square_name;
 enum class player_decision {normal_move, end_game, find_regenerate_square, wait};
 
 
@@ -36,12 +36,13 @@ class Player {
         virtual player_decision playerDecision(int game_id, int rolled_number) = 0;
         virtual int roll(Dice*);
         virtual dice_name chooseDice() = 0; // Choose dice to roll.
+        virtual dice_name chooseDiceWithFuture(vector<square_name> &future) {return chooseDice();};
 
         void endGame(int game_id);
         void regenerate(int game_id);
         void wait(int game_id, int time_to_wait);
         bool needToWait(int game_id);
-
+        virtual bool needToKnowFuture() = 0;
         void joinNewGame(int game_id);
 
         // Getters.
@@ -87,11 +88,13 @@ class Random : public NormalMove {
     public:
         explicit Random(string _player_name): NormalMove(std::move(_player_name)){};
         dice_name chooseDice() override;
+        bool needToKnowFuture() override;
 };
 
 class Traditional : public NormalMoveCommon {
     public:
         explicit Traditional(string _player_name): NormalMoveCommon(std::move(_player_name)){};
+        bool needToKnowFuture() override;
 
 };
 
@@ -105,12 +108,15 @@ class Wary : public Player {
         explicit Wary(string _player_name);
         dice_name chooseDice() override;
         player_decision playerDecision(int game_id, int rolled_number) override;
+        bool needToKnowFuture() override;
+        dice_name chooseDiceWithFuture(vector<square_name> &future) override;
 };
 
 class Experimental : public Deteriorating {
     public:
         explicit Experimental(string _player_name): Deteriorating(std::move(_player_name)){};
         player_decision playerDecision(int game_id, int rolled_number) override;
+        bool needToKnowFuture() override;
 };
 
 #endif // PLAYER_H

@@ -41,6 +41,7 @@ public:
         int returnStart() const; // Returns a pointer to Start Square.
         //Square* playerSquare(Game*, Player*, int k); // Returns a pointer to a Square k away from the Player in the Game.
         int getMaxPlayerNumber() const;
+        vector<square_name> NextSixFields(int square_index);
 };
 
 
