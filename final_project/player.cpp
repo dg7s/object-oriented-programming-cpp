@@ -34,26 +34,25 @@ int Player::roll(Dice* dice) {
 int Player::doKTOr_level(int game_id) {
     cout<<"doKTOr_level: ";
 
-    return playerAttribute[gameIndexMap.at(game_id)].first;
+    return gameIndexMap[game_id].doKTOrLevel;
 }
 void Player::joinNewGame(int game_id) {
     cout<<"joinNewGame\n";
-    playerAttribute.push_back(std::make_pair(9, 0));
     cout<<game_id;
-    gameIndexMap[game_id] = playerAttribute.size() - 1;
+    PlayerAttribute object;
+    object.doKTOrLevel = 9;
+    object.waitingTime = 0;
+    gameIndexMap[game_id] = object;
 }
 void Player::endGame(int game_id) {
-    // Delete attribute connected with finished game.
-    playerAttribute.erase(playerAttribute.begin() + gameIndexMap.at(game_id));
     // Delete hash.
     gameIndexMap.erase(game_id);
 }
 
 bool Player::needToWait(int game_id) {
-    size_t index_game_id = gameIndexMap.at(game_id);
-    if(playerAttribute[index_game_id].second == 0) return false;
-    cout<<"Player need to wait with wait_time = "<<playerAttribute[index_game_id].second;
-    playerAttribute[gameIndexMap.at(game_id)].second--;
+    if(gameIndexMap[game_id].waitingTime == 0) return false;
+    cout<<"Player need to wait with wait_time = "<<gameIndexMap[game_id].waitingTime;
+    gameIndexMap[game_id].waitingTime--;
     cout<<"\n";
     return true;
 }
@@ -61,14 +60,14 @@ bool Player::needToWait(int game_id) {
 
 void Player::wait(int game_id, int time_to_wait) {
     // Time to wait +2.
-    playerAttribute[gameIndexMap.at(game_id)].second += time_to_wait;
+    gameIndexMap[game_id].waitingTime += time_to_wait;
     cout<<"\n Player "<<player_name<<" need to wait "<<time_to_wait<<" turns.";
 }
 void Player::regenerate(int game_id) {
     // Time to wait +2.
-    playerAttribute[gameIndexMap.at(game_id)]  .second += 2;
+    gameIndexMap[game_id].waitingTime += 2;
     // Regenerate:
-    playerAttribute[gameIndexMap.at(game_id)].first++;
+    gameIndexMap[game_id].doKTOrLevel++;
 
     // Print out information.
     cout<<"\n Player "<<player_name<<" are regenerating and need to wait 2 turns.\n";
@@ -90,7 +89,7 @@ dice_name Deteriorating::chooseDice() {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 player_decision NormalMove::playerDecision(int game_id, int rolled_number) {
     // Check if doKTOr level is equal to 13.
-    if(playerAttribute[game_id].first == 13){
+    if(gameIndexMap[game_id].doKTOrLevel == 13){
         return player_decision::end_game;
     }
     else return player_decision::normal_move;
@@ -101,7 +100,7 @@ player_decision NormalMove::playerDecision(int game_id, int rolled_number) {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 player_decision NormalMoveCommon::playerDecision(int game_id, int rolled_number) {
     // Check if doKTOr level is equal to 13.
-    if(playerAttribute[game_id].first == 13){
+    if(gameIndexMap[game_id].doKTOrLevel == 13){
         return player_decision::end_game;
     }
     else return player_decision::normal_move;
@@ -157,7 +156,7 @@ dice_name Wary::chooseDice() {
 }
 player_decision Wary::playerDecision(int game_id, int rolled_number) {
     // Check if doKTOr level is equal to 13.
-    if(playerAttribute[game_id].first == 13) {
+    if(gameIndexMap[game_id].doKTOrLevel == 13) {
         return player_decision::end_game;
     }
     else if(rolled_number == 6) {
@@ -170,7 +169,7 @@ bool Wary::needToKnowFuture() {return true;}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 player_decision Experimental::playerDecision(int game_id, int rolled_number) {
      // Check if doKTOr level is equal to 13.
-    if(playerAttribute[game_id].first == 13) {
+    if(gameIndexMap[game_id].doKTOrLevel == 13) {
         return player_decision::end_game;
     }
     else if(rolled_number == 6){

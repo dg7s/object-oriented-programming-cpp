@@ -14,14 +14,17 @@ class Board;
 enum class square_name;
 enum class player_decision {normal_move, end_game, find_regenerate_square, wait};
 
+struct PlayerAttribute {
+    unsigned int waitingTime; // Should be greater than 0
+    uint8_t doKTOrLevel; // Should be from 9 to 13
+};
+
 
 class Player {
     protected:
         string player_name;
-        // In vector below we keep game_id and information about doKOTr level and time player need to wait
-        std::vector <std::pair<int,int>> playerAttribute;
         // Hash map
-        std::unordered_map<int, size_t> gameIndexMap;
+        std::unordered_map<int, PlayerAttribute> gameIndexMap;
     public:
         // Constructor
         explicit Player(string _player_name);
