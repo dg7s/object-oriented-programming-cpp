@@ -37,8 +37,6 @@ int Player::doKTOr_level(int game_id) {
     return gameIndexMap[game_id].doKTOrLevel;
 }
 void Player::joinNewGame(int game_id) {
-    cout<<"joinNewGame\n";
-    cout<<game_id;
     PlayerAttribute object;
     object.doKTOrLevel = 9;
     object.waitingTime = 0;
@@ -70,7 +68,7 @@ void Player::regenerate(int game_id) {
     gameIndexMap[game_id].doKTOrLevel++;
 
     // Print out information.
-    cout<<"\n Player "<<player_name<<" are regenerating and need to wait 2 turns.\n";
+    cout<<"\nPlayer "<<player_name<<" are regenerating and need to wait 2 turns.\n";
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Common class methods

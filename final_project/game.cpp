@@ -35,11 +35,11 @@ void Game::addPlayer(Player* player) {
 }
 
 void Game::startGame() {
-    cout<<"The game has started.\n";
+    cout<<"The game "<<game_id<<" has started.\n"<<"\033[0m";
     isStarted = true;
     while(!isWinner) {
-        cout<<"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-        cout<<"Round number "<<turnsNumber<<"\n";
+        cout<<"\033[1;34m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\033[0m";
+        cout<<"\033[1mRound number "<<turnsNumber<<"\n\033[0m";
         makeTour();
     }
     finish();
@@ -155,6 +155,7 @@ void Game::normalMove(int player_index, int rolled_number) {
 
 // Print out the winners.
 void Game::finish(){
+    cout<<"\033[1;34m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\033[0m";
     cout<<"After ";
     cout<<getTurnsNumber();
 
@@ -162,18 +163,18 @@ void Game::finish(){
 
     if(winners.size() == 1) {
         cout<<" round the game is over.\n";
-        cout << "Player ";
+        cout << "Player \033[1m";
         players[winners[0]].first->coutName();
-        cout << " won the game.\n";
+        cout << "\033[0m won the game.\n";
     }
     else {
         cout<<" rounds the game is over.\n";
-        cout<<"Players: ";
+        cout<<"Players: \033[1m";
         for(int i = 0; i < winners.size(); i++){
             players[winners[0]].first->coutName();
             cout<<", ";
         }
-        cout<<"won the game.\n";
+        cout<<"\033[0m won the game.\n";
     }
 
     // Deleted all attributes connected to this game.
