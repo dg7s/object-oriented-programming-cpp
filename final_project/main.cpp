@@ -113,11 +113,13 @@ int main(int argc, char** argv){
                             square = new Regeneration();
                             break;
                         case 'P':
+                            input.ignore();
                             int number;
                             input >> number;
                             square = new MoveTo(number);
                             break;
                         case 'O':
+                            input.ignore();
                             int time;
                             input >> time;
                             if (time <= 0) throw logic_error("Incorrect parameters for square.");
