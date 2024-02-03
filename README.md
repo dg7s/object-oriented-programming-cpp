@@ -16,10 +16,10 @@ A looped board with various field types: start, end, empty, regeneration, jump, 
 The game begins with the 9th doKTOr, undergoing regeneration on specific fields.
 
 ## Dice
-Three dice: regular, depleting, and faulty. Players choose a die before each roll.
+Three dice: common, defective, and deteriorating. Players choose a die before each roll.
 
 ## Players
-Computer players with different strategies: random, traditional, experimenting, and cautious.
+Computer players with different strategies: random, traditional, experimenting, and wary.
 
 ## Ending the Game
 The 13th doKTOr reaching the end field wins. The game continues until the end of the winning round.
@@ -29,12 +29,6 @@ Write a C++ program simulating the game based on data from a text file.
 
 ## Data Format
 The file includes player and field descriptions.
-
-## Extensions
-Encouraged to add a human player and expand the game with new field and player types.
-
-## Notes
-Emphasize C++ object-oriented design, incremental development, and early implementation of output. Ensure proper file handling and memory release.
 
 For full details, refer to `final_project/FINAL_PROJECT.md`.
 
