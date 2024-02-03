@@ -30,11 +30,5 @@ Write a C++ program simulating the game based on data from a text file.
 ## Data Format
 The file includes player and field descriptions.
 
-## Extensions
-Encouraged to add a human player and expand the game with new field and player types.
-
-## Notes
-Emphasize C++ object-oriented design, incremental development, and early implementation of output. Ensure proper file handling and memory release.
-
 For full details, refer to `final_project/FINAL_PROJECT.md`.
 
