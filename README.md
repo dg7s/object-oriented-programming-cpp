@@ -16,10 +16,10 @@ A looped board with various field types: start, end, empty, regeneration, jump, 
 The game begins with the 9th doKTOr, undergoing regeneration on specific fields.
 
 ## Dice
-Three dice: regular, depleting, and faulty. Players choose a die before each roll.
+Three dice: common, defective, and deteriorating. Players choose a die before each roll.
 
 ## Players
-Computer players with different strategies: random, traditional, experimenting, and cautious.
+Computer players with different strategies: random, traditional, experimenting, and wary.
 
 ## Ending the Game
 The 13th doKTOr reaching the end field wins. The game continues until the end of the winning round.
