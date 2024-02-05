@@ -32,8 +32,6 @@ int Player::roll(Dice* dice) {
     return dice->diceRoll();
 }
 int Player::doKTOr_level(int game_id) {
-    cout<<"doKTOr_level: ";
-
     return gameIndexMap[game_id].doKTOrLevel;
 }
 void Player::joinNewGame(int game_id) {
@@ -59,7 +57,7 @@ bool Player::needToWait(int game_id) {
 void Player::wait(int game_id, int time_to_wait) {
     // Time to wait +2.
     gameIndexMap[game_id].waitingTime += time_to_wait;
-    cout<<"\n Player "<<player_name<<" need to wait "<<time_to_wait<<" turns.";
+    cout<<"\nPlayer "<<player_name<<" need to wait "<<time_to_wait<<" turns.\n";
 }
 void Player::regenerate(int game_id) {
     // Time to wait +2.
@@ -114,9 +112,8 @@ bool Traditional::needToKnowFuture() {return false;}
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 dice_name Random::chooseDice() {
     int k = distribution_player(generator_player);
-    cout<<"Player ";
     cout<<player_name;
-    cout<<"choose dice: ";
+    cout<<" choose dice: ";
     switch (k) {
         case 0:
             cout<<"common\n";

@@ -110,7 +110,7 @@ MoveTo::MoveTo(int k): jump_length(k) {}
 void MoveTo::name() const {cout<<"Move To";}
 void MoveTo::action(Player *player, int &square_index,const int game_id) const {
     square_index = (square_index + jump_length);
-    cout<<"\n Player jumped "<<jump_length<<" squares.\n";
+    cout<<"\nPlayer jumped "<<jump_length<<" squares.\n";
 }
 void MoveTo::addSquareToVector(std::vector<square_name> &futureFields) {
     futureFields.push_back(square_name::move_to_square);

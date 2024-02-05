@@ -135,7 +135,7 @@ int main(int argc, char** argv){
                     throw logic_error("Incorrect number of squares.");
                 }
 
-                int _maxPlayerNumber = (squareNumber / 4 > 0) ? (squareNumber / 4) : 1;
+                int _maxPlayerNumber = (squareNumber / 3 > 0) ? (squareNumber / 3) : 1;
 
                 // Create a board
                 Board *board = new Board(squares, _maxPlayerNumber, start_index);
