@@ -35,8 +35,7 @@ class Game {
     public:
         // Constructors
         Game() = delete;
-        Game(Board* _board, const vector<std::unique_ptr<Player>>& players, Dice* _common,
-         Dice* _deteriorating, Dice* _defective, int _game_id);
+        Game(Board* _board, const vector<std::unique_ptr<Player>>& players, int _game_id);
 
         // Destructor
         ~Game();

@@ -66,6 +66,9 @@ int main(int argc, char** argv){
                         case 'R':
                             playerPtr = make_unique<Wary>(playerName);
                             break;
+                        case 'B':
+                            playerPtr = make_unique<Blank>(playerName);
+                            break;
                         default:
                             throw logic_error("Incorrect player type.");
                     }
@@ -140,13 +143,8 @@ int main(int argc, char** argv){
                 // Create a board
                 Board *board = new Board(squares, _maxPlayerNumber, start_index);
 
-                // Create dices.
-                CommonDice *common = new CommonDice();
-                DefectiveDice *defective = new DefectiveDice();
-                DeterioratingDice *deteriorating = new DeterioratingDice();
-
                 // Create a game.
-                Game game(board, players, common, deteriorating, defective, game_id);
+                Game game(board, players, game_id);
 
                 game.startGame();
 
@@ -154,7 +152,6 @@ int main(int argc, char** argv){
                 game_id++;
 
                 // Cleanup: Destruct players
-
                 players.clear();
 
                 // Cleanup: Destruct squares
@@ -166,10 +163,6 @@ int main(int argc, char** argv){
                 // Cleanup: Destruct board
                 delete board;
 
-                // Cleanup: Destruct dices
-                delete common;
-                delete defective;
-                delete deteriorating;
             }
             catch (const exception &e)
             {

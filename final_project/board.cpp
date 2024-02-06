@@ -24,6 +24,7 @@ void Board::addSquare(Square *square) {
 vector<square_name> Board::NextSixFields(int square_index) {
     vector<square_name> futureFields;
     for(int i = 1; i <= 6; i++){
+        square_index = (square_index + 1) % boardSize;
         squares[square_index]->addSquareToVector(futureFields);
     }
     return futureFields;

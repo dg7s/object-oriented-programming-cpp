@@ -6,10 +6,8 @@
 #include "dice.h"
 #include "cassert"
 
-Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, Dice* _common,
-           Dice* _deteriorating, Dice* _defective, int _game_id): turnsNumber(0), isStarted(false),
-                                                                  isWinner(false), board(_board),  common(_common),
-                                                                  deteriorating(_deteriorating), defective(_defective), game_id(_game_id){
+Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, int _game_id): turnsNumber(0),
+                                        isStarted(false),isWinner(false), board(_board),  game_id(_game_id){
     if(_players.size() > _board->getMaxPlayerNumber()) {
         throw logic_error("The maximum number of players has been exceeded.");
     }
@@ -17,9 +15,18 @@ Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, Dice*
     for (const auto & player : _players) {
         addPlayer(player.get());
     }
+    // Create dices.
+    common = new CommonDice();
+    defective = new DefectiveDice();
+    deteriorating = new DeterioratingDice();
 }
 
-Game::~Game() {}
+Game::~Game() {
+    // Cleanup: Destruct dices
+    delete common;
+    delete defective;
+    delete deteriorating;
+}
 
 // Methods.
 void Game::addPlayer(Player* player) {
@@ -63,7 +70,6 @@ void Game::makeMove(int player_index) {
     cout<<"Turn of ";
     players[player_index].first->coutStatus(game_id);
     cout<<"\n";
-
     // Check if player need to wait.
     // If true method decrease wait time and end round for this player.
     if(players[player_index].first->needToWait(game_id)) {return;}

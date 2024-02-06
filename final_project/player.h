@@ -70,7 +70,7 @@ public:
         dice_name chooseDice() override;
 };
 
-// These two subclasses: ConstPoints, ConstPointsCommon
+// These two subclasses: NormalMove, NormalMoveCommon
 // move by the number from the roll() method.
 class NormalMove : public  Player{
     public:
@@ -120,6 +120,15 @@ class Experimental : public Deteriorating {
         explicit Experimental(string _player_name): Deteriorating(std::move(_player_name)){};
         player_decision playerDecision(int game_id, int rolled_number) override;
         bool needToKnowFuture() override;
+};
+
+class Blank : public Player{
+    public:
+        explicit Blank(string _player_name): Player(std::move(_player_name)){};
+        dice_name chooseDice() override;
+        player_decision playerDecision(int game_id, int rolled_number) override;
+        bool needToKnowFuture() override;
+        dice_name chooseDiceWithFuture(vector<square_name> &future) override;
 };
 
 #endif // PLAYER_H

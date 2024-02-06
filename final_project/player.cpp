@@ -3,6 +3,7 @@
 #include <chrono>
 #include <vector>
 
+
 using namespace std;
 
 //~~~~~~~~~~~~~~~
@@ -24,7 +25,7 @@ void Player::coutStatus(int game_id) {
 
     cout<<"Player ";
     cout<<player_name;
-    cout<<" ";
+    cout<<", doKTOr level: ";
     cout<<doKTOr_level(game_id);
     cout<<"\n";
 }
@@ -174,3 +175,92 @@ player_decision Experimental::playerDecision(int game_id, int rolled_number) {
     }
 }
 bool Experimental::needToKnowFuture() {return false;}
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// Blank class methods
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+player_decision Blank::playerDecision(int game_id, int rolled_number) {
+    // Check if doKTOr level is equal to 13.
+    if(gameIndexMap[game_id].doKTOrLevel == 13) {
+        return player_decision::end_game;
+    }
+    else if(rolled_number == 6){
+        cout << "Do you want to stop at the nearest regeneration field if it's on the way?\n";
+        cout << "Type Y/N: ";
+        char answer;
+        cin >> answer;
+        if (answer == 'Y') {
+            cout<<"I am looking for a field of regeneration.\n";
+            return player_decision::find_regenerate_square;
+        } else {
+            cout<<"I move six squares\n";
+            return player_decision::normal_move;
+        }
+    } else {
+        return player_decision::normal_move;
+    }
+}
+bool Blank::needToKnowFuture() {return true;}
+dice_name Blank::chooseDiceWithFuture(vector<square_name> &future) {
+    cout<<"The next six fields: ";
+    for (const auto& element : future) {
+        switch(element) {
+            case square_name::regeneration_square:
+                cout<<" R ";
+                break;
+            case square_name::start_square:
+                cout<<" S ";
+                break;
+            case square_name::end_square:
+                cout<<" D ";
+                break;
+            case square_name::empty_square:
+                cout<<" . ";
+                break;
+            case square_name::move_to_square:
+                cout<<" P ";
+                break;
+            case square_name::waiting_square:
+                cout<<" O ";
+                break;
+        }
+    }
+    cout<<"\n";
+    cout<<"Choose a Dice to roll:\n";
+    cout<<"Type 1 to choose common dice.\n";
+    cout<<"Type 2 to choose defective dice.\n";
+    cout<<"Type 3 to choose deteriorating dice.\n";
+    int dice;
+    cin>>dice;
+
+    switch(dice) {
+        case 1:
+            return dice_name::common;
+        case 2:
+            return dice_name::defective;
+        case 3:
+            return dice_name::deteriorating;
+        default:
+            cout << "Incorrect dice name.\n";
+            this->chooseDice();
+    }
+}
+dice_name Blank::chooseDice() {
+    cout<<"Choose a Dice to roll:\n";
+    cout<<"Type 1 to choose common dice.\n";
+    cout<<"Type 2 to choose defective dice.\n";
+    cout<<"Type 3 to choose deteriorating dice.\n";
+    int dice;
+    cin>>dice;
+
+    switch(dice) {
+        case 1:
+            return dice_name::common;
+        case 2:
+            return dice_name::defective;
+        case 3:
+            return dice_name::deteriorating;
+        default:
+            cout << "Incorrect dice name.\n";
+            this->chooseDice();
+    }
+} // Empty implementation.
