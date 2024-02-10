@@ -9,7 +9,7 @@
 Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, int _game_id): turnsNumber(0),
                                         isStarted(false),isWinner(false), board(_board),  game_id(_game_id){
     if(_players.size() > _board->getMaxPlayerNumber()) {
-        throw logic_error("The maximum number of players has been exceeded.");
+        throw length_error("The maximum number of players has been exceeded.");
     }
     // Initialize vector <Players*, turns_to_wait>
     for (const auto & player : _players) {
@@ -34,7 +34,7 @@ void Game::addPlayer(Player* player) {
         throw logic_error("The game is in progress.");
     }
     if (players.size() + 1 > board->getMaxPlayerNumber()) {
-        throw logic_error("The maximum number of players has been exceeded.");
+        throw length_error("The maximum number of players has been exceeded.");
     } else {
         players.emplace_back(player, board->returnStart());
         player->joinNewGame(game_id);
@@ -120,7 +120,7 @@ Dice* Game::getDice(dice_name _dice_name){
         case dice_name::deteriorating:
             return deteriorating;
         default:
-            throw logic_error("Incorrect dice name.");
+            throw domain_error("Incorrect dice name.");
     }
 }
 

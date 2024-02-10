@@ -15,8 +15,8 @@ enum class square_name;
 enum class player_decision {normal_move, end_game, find_regenerate_square, wait};
 
 struct PlayerAttribute {
-    unsigned int waitingTime; // Should be greater than 0
-    uint8_t doKTOrLevel; // Should be from 9 to 13
+    unsigned int waitingTime; // Should be greater than 0.
+    uint8_t doKTOrLevel; // Should be from 9 to 13.
 };
 
 
@@ -51,6 +51,10 @@ class Player {
         // Getters.
         int doKTOr_level(int index_game_id);
 
+        friend std::ostream& operator<<(std::ostream& os, const Player& p){
+            os << "Player " << p.player_name;
+        }
+
         // Print out methods
         void coutStatus(int game_id);
         void const coutName();
@@ -65,9 +69,9 @@ class Common : public Player{
 
 // Choose only deteriorating dice.
 class Deteriorating : public Player{
-public:
-        explicit Deteriorating(string _player_name): Player(std::move(_player_name)){};
-        dice_name chooseDice() override;
+    public:
+            explicit Deteriorating(string _player_name): Player(std::move(_player_name)){};
+            dice_name chooseDice() override;
 };
 
 // These two subclasses: NormalMove, NormalMoveCommon
@@ -79,9 +83,9 @@ class NormalMove : public  Player{
 };
 
 class NormalMoveCommon : public  Common{
-public:
-    explicit NormalMoveCommon(string _player_name): Common(std::move(_player_name)){};
-    player_decision playerDecision(int game_id, int rolled_number) override;
+    public:
+        explicit NormalMoveCommon(string _player_name): Common(std::move(_player_name)){};
+        player_decision playerDecision(int game_id, int rolled_number) override;
 
 };
 

@@ -22,9 +22,7 @@ void const Player::coutName() {
 }
 
 void Player::coutStatus(int game_id) {
-
-    cout<<"Player ";
-    cout<<player_name;
+    cout<< *this;
     cout<<", doKTOr level: ";
     cout<<doKTOr_level(game_id);
     cout<<"\n";
@@ -58,7 +56,7 @@ bool Player::needToWait(int game_id) {
 void Player::wait(int game_id, int time_to_wait) {
     // Time to wait +2.
     gameIndexMap[game_id].waitingTime += time_to_wait;
-    cout<<"\nPlayer "<<player_name<<" need to wait "<<time_to_wait<<" turns.\n";
+    cout<<"\n"<< *this <<" need to wait "<<time_to_wait<<" turns.\n";
 }
 void Player::regenerate(int game_id) {
     // Time to wait +2.
@@ -67,7 +65,7 @@ void Player::regenerate(int game_id) {
     gameIndexMap[game_id].doKTOrLevel++;
 
     // Print out information.
-    cout<<"\nPlayer "<<player_name<<" are regenerating and need to wait 2 turns.\n";
+    cout<<"\n"<< *this <<" are regenerating and need to wait 2 turns.\n";
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Common class methods
@@ -126,7 +124,6 @@ dice_name Random::chooseDice() {
             cout<<"defective\n";
             return dice_name::defective;
     }
-    throw logic_error("Error.");
 }
 bool Random::needToKnowFuture() {return false;}
 
@@ -263,4 +260,4 @@ dice_name Blank::chooseDice() {
             cout << "Incorrect dice name.\n";
             this->chooseDice();
     }
-} // Empty implementation.
+}
