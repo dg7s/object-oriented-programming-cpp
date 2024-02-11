@@ -32,9 +32,9 @@ public:
 
         // Methods
         void addSquare(Square* square); // Add to list next square if possible.
-        void makeAction(Player* player, int &square_index, const int game_id);
-        bool makeHypotheticalAction(Player* player, int &square_index, const int game_id);
-        bool makeHypotheticalEnd(int &square_index, int movement_number, const int game_id);
+        void makeAction(Player* player, int &square_index, int game_id);
+        bool makeHypotheticalAction(Player* player, int &square_index, int game_id);
+        bool makeHypotheticalEnd(int &square_index, int movement_number, int game_id);
 
         // Getters
         int getBoardSize() const; // Returns a size of the board.

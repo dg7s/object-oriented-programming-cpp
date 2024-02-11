@@ -16,7 +16,7 @@ class Square {
         Square() = default;
 
         // Destructor.
-        ~Square() = default;
+        virtual ~Square() = default;
 
         // Copy constructor and Assigment operator is deleted.
         Square(const Square& s) = delete;

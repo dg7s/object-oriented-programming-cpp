@@ -4,16 +4,30 @@
 #include <memory>
 #include "player.h"
 #include "dice.h"
-#include "cassert"
+#include <cassert>
+#include <algorithm>
+#include <random>
 
 Game::Game(Board* _board, const vector<std::unique_ptr<Player>>& _players, int _game_id): turnsNumber(0),
                                         isStarted(false),isWinner(false), board(_board),  game_id(_game_id){
     if(_players.size() > _board->getMaxPlayerNumber()) {
         throw length_error("The maximum number of players has been exceeded.");
     }
+
+    // Temporary vector.
+    std::vector<Player*> temporaryPlayers;
+    for (const auto& player : _players) {
+        temporaryPlayers.push_back(player.get());
+    }
+
+    // Randomly arrange the order of players in a temporary vector.
+    std::random_device rd;
+    std::mt19937 g(rd());
+    std::shuffle(temporaryPlayers.begin(), temporaryPlayers.end(), g);
+
     // Initialize vector <Players*, turns_to_wait>
-    for (const auto & player : _players) {
-        addPlayer(player.get());
+    for (const auto& player : temporaryPlayers) {
+        addPlayer(player);
     }
     // Create dices.
     common = new CommonDice();
