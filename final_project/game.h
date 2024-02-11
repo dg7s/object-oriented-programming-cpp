@@ -50,9 +50,9 @@ class Game {
         void makeTour(); // Make all moves in current tour.
         void finish(); // End the game and print the results.
         void makeMove(int move_number); // Make move for current player. Given index to player.
+        void summary(); // Displaying players' situations after the round.
 
-
-        // Methods connected to players.
+    // Methods connected to players.
         // If DokTOr_level = 13 player try to find tries to find the nearest end square within range k
         void tryToEnd(int player_index, int rolled_number);
         // If roll() = 6 maybe player wants to choose an earlier regeneration field.

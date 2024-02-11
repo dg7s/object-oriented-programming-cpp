@@ -52,16 +52,27 @@ void Game::startGame() {
     finish();
 }
 
+void Game::summary() {
+    cout<<"\nSummary: \n";
+    for( int index = 0; index < players.size(); index++) {
+        players[index].first->coutStatus(game_id);
+        cout<<" is on space "<<players[index].second;
+        cout<<"\n";
+    }
+
+}
+
 int Game::getTurnsNumber() const{
     return turnsNumber;
 }
 
 void Game::makeTour(){
     for( int index = 0; index < players.size(); index++) {
-
         makeMove(index);
+        cout << "\033[32m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\033[0m\n";
     }
     turnsNumber++;
+    summary();
 }
 
 // k - index of player in our vector.
@@ -69,7 +80,7 @@ void Game::makeMove(int player_index) {
 
     cout<<"Turn of ";
     players[player_index].first->coutStatus(game_id);
-    cout<<"\n";
+    cout<<"\n\n";
     // Check if player need to wait.
     // If true method decrease wait time and end round for this player.
     if(players[player_index].first->needToWait(game_id)) {return;}
@@ -90,7 +101,11 @@ void Game::makeMove(int player_index) {
     // Player rolls the dice.
     int rolled_number = players[player_index].first->roll(dice);
 
+    cout<<"The player rolled a "<<rolled_number;
+
     player_decision decision = players[player_index].first->playerDecision(game_id, rolled_number);
+
+
 
     switch(decision) {
         case player_decision::end_game:
@@ -154,6 +169,7 @@ void Game::normalMove(int player_index, int rolled_number) {
             % board->getBoardSize();
 
     players[player_index].second = new_player_position;
+    cout<<" and moved to the square "<<new_player_position<<"\n";
 
     // The appropriate action for the square is performed. Function updates the player's position.
     board->makeAction(players[player_index].first, players[player_index].second, game_id);

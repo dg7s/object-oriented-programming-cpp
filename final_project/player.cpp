@@ -2,6 +2,7 @@
 #include <random>
 #include <chrono>
 #include <vector>
+#include <limits>
 
 
 using namespace std;
@@ -17,7 +18,7 @@ uniform_int_distribution<int> distribution_player(0,2);
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Player::Player(string _player_name): player_name(std::move(_player_name)) {}
 
-void const Player::coutName() {
+void Player::coutName() {
     cout<<player_name;
 }
 
@@ -25,7 +26,6 @@ void Player::coutStatus(int game_id) {
     cout<< *this;
     cout<<", doKTOr level: ";
     cout<<doKTOr_level(game_id);
-    cout<<"\n";
 }
 int Player::roll(Dice* dice) {
     return dice->diceRoll();
@@ -34,7 +34,7 @@ int Player::doKTOr_level(int game_id) {
     return gameIndexMap[game_id].doKTOrLevel;
 }
 void Player::joinNewGame(int game_id) {
-    PlayerAttribute object;
+    PlayerAttribute object{};
     object.doKTOrLevel = 9;
     object.waitingTime = 0;
     gameIndexMap[game_id] = object;
@@ -181,7 +181,7 @@ player_decision Blank::playerDecision(int game_id, int rolled_number) {
         return player_decision::end_game;
     }
     else if(rolled_number == 6){
-        cout << "Do you want to stop at the nearest regeneration field if it's on the way?\n";
+        cout << "\nDo you want to stop at the nearest regeneration field if it's on the way?\n";
         cout << "Type Y/N: ";
         char answer;
         cin >> answer;
@@ -189,7 +189,7 @@ player_decision Blank::playerDecision(int game_id, int rolled_number) {
             cout<<"I am looking for a field of regeneration.\n";
             return player_decision::find_regenerate_square;
         } else {
-            cout<<"I move six squares\n";
+            cout<<"I move six squares.\n";
             return player_decision::normal_move;
         }
     } else {
@@ -222,34 +222,24 @@ dice_name Blank::chooseDiceWithFuture(vector<square_name> &future) {
         }
     }
     cout<<"\n";
-    cout<<"Choose a Dice to roll:\n";
-    cout<<"Type 1 to choose common dice.\n";
-    cout<<"Type 2 to choose defective dice.\n";
-    cout<<"Type 3 to choose deteriorating dice.\n";
-    int dice;
-    cin>>dice;
-
-    switch(dice) {
-        case 1:
-            return dice_name::common;
-        case 2:
-            return dice_name::defective;
-        case 3:
-            return dice_name::deteriorating;
-        default:
-            cout << "Incorrect dice name.\n";
-            this->chooseDice();
-    }
+    this->chooseDice();
 }
 dice_name Blank::chooseDice() {
     cout<<"Choose a Dice to roll:\n";
     cout<<"Type 1 to choose common dice.\n";
     cout<<"Type 2 to choose defective dice.\n";
     cout<<"Type 3 to choose deteriorating dice.\n";
-    int dice;
-    cin>>dice;
 
-    switch(dice) {
+    int dice_number;
+
+    if (!(cin >> dice_number)) {
+        cout << "Incorrect input. Please enter a valid number.\n";
+        cin.clear();  // Resets error flag.
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignore end line.
+        return this->chooseDice();
+    }
+
+    switch(dice_number) {
         case 1:
             return dice_name::common;
         case 2:
@@ -258,6 +248,6 @@ dice_name Blank::chooseDice() {
             return dice_name::deteriorating;
         default:
             cout << "Incorrect dice name.\n";
-            this->chooseDice();
+            return this->chooseDice();
     }
 }

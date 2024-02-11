@@ -43,6 +43,7 @@ bool Board::makeHypotheticalEnd( int &square_index, int movement_number, const i
         if(squares[current_position]->hypotheticalEnd(square_index, game_id)){
             // Updated square index.
             square_index = current_position;
+            cout<<" and moved to the square "<<current_position<<"\n";
             return true;
         }
     }
@@ -58,6 +59,7 @@ bool Board::makeHypotheticalAction(Player *player, int &square_index, const int 
         if(squares[current_position]->hypotheticalAction(player, game_id)){
             // Update square index.
             square_index = current_position;
+            cout<<" and moved to the square "<<current_position<<"\n";
             return true;
         }
     }

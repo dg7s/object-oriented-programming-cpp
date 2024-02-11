@@ -57,7 +57,7 @@ class Player {
 
         // Print out methods
         void coutStatus(int game_id);
-        void const coutName();
+        void coutName();
 };
 
 // Choose only common dice.
